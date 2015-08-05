@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+<f:view>
+
+	<h:head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, user-scalable=no" />
+		<title><ui:insert name="pageTitle"></ui:insert></title>
+		<ui:insert name="head-extra" />
+		<style type="text/css">
+.warehouseManagement .ui-menu-child {
+	white-space: nowrap;
+	width: 225px !important;
+}
+
+.wareManagement .ui-menu-child {
+	white-space: nowrap;
+	width: 340px !important;
+}
+
+.orderedWares .ui-menu-child {
+	white-space: nowrap;
+	width: 190px !important;
+}
+
+.ui-layout-unit-content {
+	background-image: url('images/bluebackgroundsmall.jpg');
+}
+</style>
+	</h:head>
+
+	<h:body
+		style="background-image:url(images/background.jpg); background-size: cover; background-repeat:no-repeat; ">
+		
+		<p:growl id="growl" showDetail="true" autoUpdate="true" />
+
+		<h:form>
+			<p:menubar>
+
+				<!-- vedelmet beallitani security bekotese utan -->
+				<p:menuitem value="Admin area" url="#" icon="ui-icon-person" />
+
+				<!-- vedelmet beallitani security bekotese utan -->
+				<p:submenu styleClass="warehouseManagement"
+					label="Warehouse management" icon="ui-icon-home">
+					<p:menuitem value="Add/Remove warehouse" url="#"
+						icon="ui-icon-transferthick-e-w" style=" width: 215px !important;" />
+					<p:separator />
+					<p:menuitem value="Warehouse stock report" url="#"
+						icon="ui-icon-note" style=" width: 215px !important;" />
+				</p:submenu>
+
+				<!-- vedelmet beallitani security bekotese utan -->
+				<p:submenu styleClass="wareManagement" label="Ware management"
+					icon="ui-icon-pencil">
+					<p:menuitem value="Create/Delete ware type" url="#"
+						icon="ui-icon-transferthick-e-w" style=" width: 330px !important;" />
+					<p:separator />
+					<p:menuitem value="Add/Remove ware To/From warehouse" url="#"
+						icon="ui-icon-transferthick-e-w" style="width: 330px !important;" />
+					<p:separator />
+					<p:menuitem value="Move wares" url="#"
+						icon="ui-icon-triangle-2-e-w" style="width: 330px !important;" />
+				</p:submenu>
+
+				<!-- vedelmet beallitani security bekotese utan -->
+				<p:submenu styleClass="orderedWares" label="Ordered wares"
+					icon="ui-icon-calendar">
+					<p:menuitem value="Webshop orders" url="#" icon="ui-icon-cart"
+						style=" width: 180px !important;" />
+					<p:separator />
+					<p:menuitem value="Salesmanship orders" url="#"
+						icon="ui-icon-suitcase" style=" width: 180px !important;" />
+				</p:submenu>
+
+				<f:facet name="options">
+					<c:choose>
+						<c:when
+							test="#{!request.requestURL.toString().contains('login.xhtml') and request.userPrincipal.name == null }">
+							<p:button href="#" value="Login" icon="ui-icon-key" />
+						</c:when>
+						<c:otherwise>
+							<p:button href="#" value="Logout" icon="ui-icon-circle-close" />
+						</c:otherwise>
+					</c:choose>
+				</f:facet>
+			</p:menubar>
+		</h:form>
+
+
+		<div id="contentDiv">
+			<div class="ui-wrap-content" style="height: 100%;">
+				<div id="content">
+					<div id="contentInside">
+						<ui:insert name="content" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</h:body>
+
+</f:view>
+</html>
