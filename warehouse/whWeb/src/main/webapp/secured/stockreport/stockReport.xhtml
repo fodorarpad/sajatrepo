@@ -1,0 +1,126 @@
+<ui:composition template="/templates/masterLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+	<ui:define name="pageTitle">Stock/Transfer Report</ui:define>
+	<ui:define name="content">
+
+		<div align="center">
+			<br />
+
+			<h:panelGroup
+				rendered="#{!(request.isUserInRole('STOREKEEPER') || request.isUserInRole('MANAGER'))}"
+				style="color: white;">
+				<br />
+				<br />
+				<h2 style="font-family: Broadway; color: white">!!!Access
+					Denied!!!</h2>
+			</h:panelGroup>
+
+			<p:panel
+				rendered="#{request.isUserInRole('STOREKEEPER') || request.isUserInRole('MANAGER')}">
+				<f:facet name="header">
+					<h:outputText value="Stock/Transfer reports" />
+				</f:facet>
+				<h:form id="form">
+					<p:tabView>
+						<p:tab title="Stock/Changes">
+							<div align="left">
+								<p:outputLabel for="selectWarehouse" value="Select warehouse: " />
+								<p:selectOneMenu id="selectWarehouse"
+									onchange="PF('stockTable').filter()"
+									value="#{stockReportController.selectedWarehouseName}">
+									<p:ajax listener="#{stockReportController.onWarehouseChange()}"
+										update="whStock:stockTable,whStock:stockHistoryTable" />
+									<f:selectItem itemLabel="Select warehouse" itemValue=" "
+										noSelectionOption="false" />
+									<f:selectItems value="#{stockReportController.warehouseNames}" />
+								</p:selectOneMenu>
+							</div>
+							<p:tabView id="whStock">
+								<p:tab title="Actual stock level">
+									<p:dataTable id="stockTable" var="stock" widgetVar="stockTable"
+										value="#{stockReportController.lazyStockReportActualModel}"
+										emptyMessage="#{out.empty_message}"
+										paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+										rowsPerPageTemplate="5,10,15" lazy="true" paginator="true"
+										rows="10">
+
+										<p:column headerText="Ware" sortBy="#{stock.ware.wareName}"
+											filterBy="ware">
+											<h:outputText value="#{stock.ware.wareName}" />
+										</p:column>
+
+										<p:column headerText="Amount">
+											<h:outputText value="#{stock.piece}" />
+										</p:column>
+
+									</p:dataTable>
+								</p:tab>
+								<p:tab title="Stock changes">
+									<p:dataTable id="stockHistoryTable" var="stockHistory"
+										value="#{stockReportController.lazyStockReportHistoryModel}"
+										emptyMessage="#{out.empty_message}"
+										paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+										rowsPerPageTemplate="5,10,15" lazy="true" paginator="true"
+										rows="10">
+
+										<p:column headerText="Ware"
+											sortBy="#{stockHistory.ware.wareName}" filterBy="ware">
+											<h:outputText value="#{stockHistory.ware.wareName}" />
+										</p:column>
+
+										<p:column headerText="Change time"
+											sortBy="#{stockHistory.changeTime}">
+											<h:outputText value="#{stockHistory.changeTime}" />
+										</p:column>
+
+										<p:column headerText="Old Amount">
+											<h:outputText value="#{stockHistory.old_piece}" />
+										</p:column>
+
+										<p:column headerText="New Amount">
+											<h:outputText value="#{stockHistory.new_piece}" />
+										</p:column>
+
+
+									</p:dataTable>
+								</p:tab>
+							</p:tabView>
+						</p:tab>
+						<p:tab title="Pending transfers">
+							<!-- 							<p:dataTable id="transfersTable" var="transfers" -->
+							<!-- 								value="#{stockReportController.lazyStockReportTransferModel}" -->
+							<!-- 								emptyMessage="#{out.empty_message}" -->
+							<!-- 								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" -->
+							<!-- 								rowsPerPageTemplate="5,10,15" lazy="true" paginator="true" -->
+							<!-- 								rows="10"> -->
+
+							<!-- 								<p:column headerText="Initial warehouse id"> -->
+							<!-- 									<h:outputText value="#{transfers.fromWarehouse}" /> -->
+							<!-- 								</p:column> -->
+
+							<!-- 								<p:column headerText="Target warehouse id"> -->
+							<!-- 									<h:outputText value="#{transfers.toWarehouse}" /> -->
+							<!-- 								</p:column> -->
+
+							<!-- 								<p:column headerText="Transport status"> -->
+							<!-- 									<h:outputText value="#{transfers.transportStatus}" /> -->
+							<!-- 								</p:column> -->
+
+							<!-- 							</p:dataTable> -->
+						</p:tab>
+					</p:tabView>
+				</h:form>
+
+			</p:panel>
+		</div>
+	</ui:define>
+</ui:composition>

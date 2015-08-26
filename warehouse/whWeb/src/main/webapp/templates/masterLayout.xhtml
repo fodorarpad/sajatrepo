@@ -17,83 +17,88 @@
 		<meta name="viewport"
 			content="width=device-width, initial-scale=1.0, user-scalable=no" />
 		<title><ui:insert name="pageTitle"></ui:insert></title>
+
+		<h:outputStylesheet library="default" name="css/masterLayout.css" />
+
 		<ui:insert name="head-extra" />
-		<style type="text/css">
-.warehouseManagement .ui-menu-child {
-	white-space: nowrap;
-	width: 225px !important;
-}
-
-.wareManagement .ui-menu-child {
-	white-space: nowrap;
-	width: 340px !important;
-}
-
-.orderedWares .ui-menu-child {
-	white-space: nowrap;
-	width: 190px !important;
-}
-
-.ui-layout-unit-content {
-	background-image: url('images/bluebackgroundsmall.jpg');
-}
-</style>
 	</h:head>
 
-	<h:body
-		style="background-image:url(images/background.jpg); background-size: cover; background-repeat:no-repeat; ">
-		
+	<h:body>
+
 		<p:growl id="growl" showDetail="true" autoUpdate="true" />
 
 		<h:form>
 			<p:menubar>
 
-				<!-- vedelmet beallitani security bekotese utan -->
-				<p:menuitem value="Admin area" url="#" icon="ui-icon-person" />
+				<sec:authorize ifAllGranted="ROLE_ADMIN">
+					<p:menuitem value="Admin area" url="/secured/admin/admin.xhtml"
+						icon="ui-icon-person" />
+				</sec:authorize>
 
-				<!-- vedelmet beallitani security bekotese utan -->
-				<p:submenu styleClass="warehouseManagement"
-					label="Warehouse management" icon="ui-icon-home">
-					<p:menuitem value="Add/Remove warehouse" url="#"
-						icon="ui-icon-transferthick-e-w" style=" width: 215px !important;" />
-					<p:separator />
-					<p:menuitem value="Warehouse stock report" url="#"
-						icon="ui-icon-note" style=" width: 215px !important;" />
-				</p:submenu>
+				<sec:authorize ifAnyGranted="ROLE_STOREKEEPER,ROLE_MANAGER">
+					<p:submenu styleClass="warehouseManagementBubble"
+						label="Warehouse management" icon="ui-icon-home">
 
-				<!-- vedelmet beallitani security bekotese utan -->
-				<p:submenu styleClass="wareManagement" label="Ware management"
-					icon="ui-icon-pencil">
-					<p:menuitem value="Create/Delete ware type" url="#"
-						icon="ui-icon-transferthick-e-w" style=" width: 330px !important;" />
-					<p:separator />
-					<p:menuitem value="Add/Remove ware To/From warehouse" url="#"
-						icon="ui-icon-transferthick-e-w" style="width: 330px !important;" />
-					<p:separator />
-					<p:menuitem value="Move wares" url="#"
-						icon="ui-icon-triangle-2-e-w" style="width: 330px !important;" />
-				</p:submenu>
+						<sec:authorize ifAllGranted="ROLE_STOREKEEPER">
+							<p:menuitem style="width: 270px !important;"
+								value="Add/Remove warehouse"
+								url="/secured/warehouse/warehouse.xhtml"
+								icon="ui-icon-transferthick-e-w" />
+							<p:separator />
+						</sec:authorize>
 
-				<!-- vedelmet beallitani security bekotese utan -->
-				<p:submenu styleClass="orderedWares" label="Ordered wares"
-					icon="ui-icon-calendar">
-					<p:menuitem value="Webshop orders" url="#" icon="ui-icon-cart"
-						style=" width: 180px !important;" />
-					<p:separator />
-					<p:menuitem value="Salesmanship orders" url="#"
-						icon="ui-icon-suitcase" style=" width: 180px !important;" />
-				</p:submenu>
+						<sec:authorize ifAnyGranted="ROLE_STOREKEEPER,ROLE_MANAGER">
+							<p:menuitem style="width: 270px !important;"
+								value="Warehouse stock/transfer report"
+								url="/secured/stockreport/stockReport.xhtml" icon="ui-icon-note" />
+						</sec:authorize>
+
+					</p:submenu>
+				</sec:authorize>
+
+				<sec:authorize ifAllGranted="ROLE_STOREKEEPER">
+					<p:submenu styleClass="wareManagementBubble"
+						label="Ware management" icon="ui-icon-pencil">
+						<p:menuitem style="width: 330px !important;"
+							value="Create/Delete ware type"
+							url="/secured/ware/wareManagement.xhtml"
+							icon="ui-icon-transferthick-e-w" />
+						<p:separator />
+						<p:menuitem style="width: 330px !important;"
+							value="Add/Remove ware To/From warehouse"
+							url="/secured/wareprocurement/wareorder.xhtml"
+							icon="ui-icon-transferthick-e-w" />
+						<p:separator />
+						<p:menuitem style="width: 330px !important;" value="Move wares"
+							url="/secured/transport/transport.xhtml"
+							icon="ui-icon-triangle-2-e-w" />
+					</p:submenu>
+				</sec:authorize>
+
+				<!-- 				hogy ide milyen jog kell nem sikerult eldontenem -->
+				<sec:authorize ifAllGranted="ROLE_USER">
+					<p:submenu styleClass="orderedWaresBubble" label="Ordered wares"
+						icon="ui-icon-calendar">
+						<p:menuitem style="width: 180px !important;"
+							value="Webshop orders" url="#" icon="ui-icon-cart" />
+						<p:separator />
+						<p:menuitem style="width: 180px !important;"
+							value="Salesmanship orders" url="#" icon="ui-icon-suitcase" />
+					</p:submenu>
+				</sec:authorize>
 
 				<f:facet name="options">
-					<c:choose>
-						<c:when
-							test="#{!request.requestURL.toString().contains('login.xhtml') and request.userPrincipal.name == null }">
-							<p:button href="#" value="Login" icon="ui-icon-key" />
-						</c:when>
-						<c:otherwise>
-							<p:button href="#" value="Logout" icon="ui-icon-circle-close" />
-						</c:otherwise>
-					</c:choose>
+					<p:button
+						rendered="#{not empty request.remoteUser and !request.requestURL.toString().contains('userSelfCare.xhtml')}"
+						value="Selfcare" href="/public/userSelfCare.xhtml" />
+					<p:button
+						rendered="#{empty request.remoteUser and !request.requestURL.toString().contains('registration.xhtml')}"
+						value="Registration" href="/public/registration.xhtml" />
+					<p:button
+						rendered="#{empty request.remoteUser and !request.requestURL.toString().contains('login.xhtml')}"
+						href="/public/login.xhtml" value="Login" icon="ui-icon-key" />
+					<p:button rendered="#{not empty request.remoteUser}" href="/logout"
+						value="Logout" icon="ui-icon-circle-close" />
 				</f:facet>
 			</p:menubar>
 		</h:form>

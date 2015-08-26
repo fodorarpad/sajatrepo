@@ -1,0 +1,84 @@
+<ui:composition template="/templates/masterLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+	<ui:define name="pageTitle">Item transport</ui:define>
+	<ui:define name="content">
+
+		<h:panelGroup rendered="#{!request.isUserInRole('STOREKEEPER')}"
+			style="color: white;">
+			<br />
+			<br />
+			<br />
+			<h2 style="font-family: Broadway; color: white">!!!Access
+				Denied!!!</h2>
+		</h:panelGroup>
+
+		<h:form>
+			<p:panel id="basic" header="Transport" style="margin-bottom:20px"
+				rendered="#{request.isUserInRole('STOREKEEPER')}">
+				<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+
+					<p:outputLabel for="fromWarehouse" value="Kiindulási raktár: " />
+					<p:selectOneMenu id="fromWarehouse"
+						value="#{transportController.selectedFromWarehouseName}">
+						<f:selectItem itemLabel="Select One" itemValue="" />
+						<f:selectItems value="#{transportController.whNames}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="toWarehouse" value="Cél raktár: " />
+					<p:selectOneMenu id="toWarehouse"
+						value="#{transportController.selectedToWarehouseName}">
+						<f:selectItem itemLabel="Select One" itemValue="" />
+						<f:selectItems value="#{transportController.whNames}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5">
+					<h:outputLabel for="items" value="Áru: " />
+					<p:selectCheckboxMenu id="items"
+						value="#{transportController.selectedwareNames}" label="Wares"
+						filter="true" filterMatchMode="startsWith">
+						<f:selectItems value="#{transportController.wareNames}" />
+						<p:ajax event="toggleSelect" update="num" />
+						<p:ajax event="change" update="num" />
+					</p:selectCheckboxMenu>
+
+					<h:outputLabel for="num" value="Number of items:	"
+						styleClass="paginated">
+						<p:dataList id="num"
+							value="#{transportController.selectedwareNames}" var="ware"
+							emptyMessage="No wares selected">
+								#{ware}
+								<p:spinner id="darab" value="#{transportController.db}" min="0" />
+						</p:dataList>
+					</h:outputLabel>
+				</h:panelGrid>
+
+				<h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
+
+					<h:outputLabel for="status" value="Státusz: ">
+						<p:outputLabel id="status"
+							value="#{transportController.transportStatus}" />
+					</h:outputLabel>
+
+					<p:commandButton value="Szállítás" id="ajax"
+						actionListener="#{transportController.transport()}"
+						disabled="#{transportController.wares} == null}"
+						styleClass="ui-priority-primary" update="status" />
+
+				</h:panelGrid>
+
+
+			</p:panel>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

@@ -10,7 +10,8 @@
 	</parent>
 	<artifactId>whWeb</artifactId>
 	<packaging>war</packaging>
-	<name>whWeb</name>
+	<name>Web</name>
+	<description>A webes felületet kezelő modul.</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,7 +30,7 @@
 		<dependency>
 			<groupId>hu.neuron.java.warehouse</groupId>
 			<artifactId>whBusinessAPI</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
@@ -86,10 +87,6 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>

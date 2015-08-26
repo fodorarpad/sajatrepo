@@ -8,7 +8,17 @@
 		transaction-type="JTA">
 
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<jta-data-source>hu.neuron.JpaDataSource</jta-data-source>
+		<jta-data-source>hu.neuron.warehouse.JpaDataSource</jta-data-source>
+		<class>hu.neuron.java.warehouse.whCore.entity.BaseEntity</class>
+		<class>hu.neuron.java.warehouse.whCore.entity.Manager</class>
+		<class>hu.neuron.java.warehouse.whCore.entity.Role</class>
+		<class>hu.neuron.java.warehouse.whCore.entity.Stock</class>
+		<class>hu.neuron.java.warehouse.whCore.entity.StockHistory</class>
+		<class>hu.neuron.java.warehouse.whCore.entity.Transport</class>
+		<class>hu.neuron.java.warehouse.whCore.entity.TransportDetails</class>
+		<class>hu.neuron.java.warehouse.whCore.entity.User</class>
+		<class>hu.neuron.java.warehouse.whCore.entity.Ware</class>
+		<class>hu.neuron.java.warehouse.whCore.entity.Warehouse</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 

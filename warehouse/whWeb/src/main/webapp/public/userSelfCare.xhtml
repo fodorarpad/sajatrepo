@@ -1,0 +1,92 @@
+<ui:composition template="/templates/masterLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+	<ui:define name="pageTitle">Selfcare</ui:define>
+	<ui:define name="content">
+
+		<div align="center">
+			<br />
+
+			<h:panelGroup rendered="#{empty request.remoteUser}"
+				style="color: white;">
+				<br />
+				<br />
+				<h2 style="font-family: Broadway; color: white">To access this
+					content, please login.</h2>
+			</h:panelGroup>
+
+			<p:panel rendered="#{not empty request.remoteUser}"
+				style="width:435px;">
+				<f:facet name="header">
+					<h:outputText
+						value="Selfcare
+					area! You can modify your details here. Welcome #{userSelfCareController.currentUser.userName}" />
+				</f:facet>
+
+				<h:form id="userSelfCareForm" prependId="false">
+
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputText value="Modify password: " />
+						<p:selectBooleanCheckbox
+							value="#{userSelfCareController.newPasswordCheck}">
+							<p:ajax update="userSelfCareForm" />
+						</p:selectBooleanCheckbox>
+
+						<h:outputText
+							rendered="#{userSelfCareController.newPasswordCheck}"
+							value="New Password: " />
+						<p:password rendered="#{userSelfCareController.newPasswordCheck}"
+							id="password1" value="#{userSelfCareController.password1}"
+							match="password2" />
+
+						<h:outputText
+							rendered="#{userSelfCareController.newPasswordCheck}"
+							value="New Password again: " />
+						<p:password rendered="#{userSelfCareController.newPasswordCheck}"
+							id="password2" value="#{userSelfCareController.password2}" />
+
+						<h:outputText value="Fullname: " />
+						<p:inputText id="fullNameInput" required="true"
+							value="#{userSelfCareController.currentUser.fullName}"
+							requiredMessage="Please enter your fullname" />
+
+						<h:outputText value="Email: " />
+						<p:inputText id="emailInput" required="true"
+							value="#{userSelfCareController.currentUser.email}"
+							requiredMessage="Please enter your email address."
+							validatorMessage="Invalid email format">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+
+						<h:outputText value="Phone number: " />
+						<p:inputText id="phoneNumberInput" required="true"
+							value="#{userSelfCareController.currentUser.phoneNumber}"
+							requiredMessage="Please enter your phone number"
+							validatorMessage="Invalid phone number format">
+							<f:validateRegex pattern="^([\d]{11})?$" />
+						</p:inputText>
+
+					</h:panelGrid>
+
+					<p:separator />
+
+					<p:commandButton id="userSelfCareApply" value="Apply modifications"
+						action="#{userSelfCareController.updateUser()}"
+						icon="ui-icon-check" update="userSelfCareForm" />
+
+				</h:form>
+			</p:panel>
+
+		</div>
+
+	</ui:define>
+</ui:composition>

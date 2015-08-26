@@ -1,0 +1,50 @@
+<ui:composition template="/templates/masterLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+	<ui:define name="pageTitle">Login</ui:define>
+	<ui:define name="content">
+
+		<div align="center">
+			<br />
+
+			<h:panelGroup rendered="#{not empty request.remoteUser}"
+				style="color: white;">
+				<br />
+				<br />
+				<h2 style="font-family: Broadway; color: white">To access this
+					content, please logout.</h2>
+			</h:panelGroup>
+
+			<p:panel rendered="#{empty request.remoteUser}" style="width:360px">
+				<f:facet name="header">
+					<h:outputText value="Login" />
+				</f:facet>
+
+				<h:panelGroup style="color: white;" layout="block" class="error"
+					rendered="#{param['error'] == 1}">Wrong password</h:panelGroup>
+
+				<form name="loginForm" action="#{request.contextPath}/login"
+					method="POST">
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputText value="Username: " />
+						<p:inputText id="username" />
+
+						<h:outputText value="Password: " />
+						<p:password id="password" />
+					</h:panelGrid>
+					<p:separator />
+					<p:commandButton id="submit" value="Login"
+						oncomplete="/index.xhtml" icon="ui-icon-key" />
+				</form>
+			</p:panel>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -10,8 +10,9 @@
 	</parent>
 	<artifactId>whBusiness</artifactId>
 	<packaging>ejb</packaging>
-	<name>whBusiness</name>
-	
+	<name>Business</name>
+	<description>A felhasználói folyamatok kezelésére szolgáló modul.</description>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -20,14 +21,19 @@
 		<dependency>
 			<groupId>hu.neuron.java.warehouse</groupId>
 			<artifactId>whBusinessAPI</artifactId>
-			<version>${version}</version>
-		</dependency>		
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>hu.neuron.java.warehouse</groupId>
 			<artifactId>whCore</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>

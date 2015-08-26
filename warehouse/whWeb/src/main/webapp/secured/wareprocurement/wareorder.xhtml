@@ -1,0 +1,64 @@
+
+<ui:composition template="/templates/masterLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+	<ui:define name="pageTitle">Warehouse Managment</ui:define>
+	<ui:define name="content">
+	
+		<h:panelGroup rendered="#{!request.isUserInRole('STOREKEEPER')}"
+			style="color: white;">
+			<br />
+			<br />
+			<br />
+			<h2 style="font-family: Broadway; color: white">!!!Access
+				Denied!!!</h2>
+		</h:panelGroup>
+	
+		<p:panel header="Ware Order" rendered="#{request.isUserInRole('STOREKEEPER')}">
+			<h:form id="select">
+
+				<h:panelGrid columns="4" style="margin-bottom:10px" cellpadding="5">
+					<h:outputLabel for="items" value="Áru: " />
+					<p:selectCheckboxMenu id="items"
+						value="#{wareOrderConttroller.selectedwareNames}" label="Wares"
+						filter="true" filterMatchMode="startsWith">
+						<f:selectItems value="#{wareOrderConttroller.wareNames}" />
+						<p:ajax event="toggleSelect" update="num" />
+						<p:ajax event="change" update="num" />
+					</p:selectCheckboxMenu>
+
+					<h:outputLabel for="num" value="Number of items:"
+						styleClass="paginated">
+						<p:scrollPanel mode="native"
+							style="margin-left:50px;width:800px;height:300px">
+							<p:dataList id="num"
+								value="#{wareOrderConttroller.selectedwareNames}" var="ware"
+								emptyMessage="No wares selected">
+								#{ware}
+								<h:outputText style="height:70px" value="&lt;br/&gt;" escape="false" />
+								<p:spinner style="margin-left:50px" id="darab"
+									value="#{wareOrderConttroller.db}" min="0" />
+							</p:dataList>
+						</p:scrollPanel>
+					</h:outputLabel>
+				</h:panelGrid>
+
+
+				<p:commandButton value="Order" id="ajax"
+					actionListener="#{wareOrderConttroller.order}"
+					disabled="#{wareOrderConttroller.selectedwareNames} == null}"
+					styleClass="ui-priority-primary" />
+			</h:form>
+
+		</p:panel>
+
+	</ui:define>
+</ui:composition>

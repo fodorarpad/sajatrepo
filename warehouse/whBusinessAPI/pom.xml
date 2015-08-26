@@ -9,7 +9,8 @@
 		<version>0.0.1</version>
 	</parent>
 	<artifactId>whBusinessAPI</artifactId>
-	<name>whBusinessAPI</name>
+	<name>Business API</name>
+	<description>A Business és Core modulokhoz szükséges interfészeket tartalmazó modul</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

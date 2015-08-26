@@ -1,0 +1,20 @@
+body {
+	background-image: url(../../images/background.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.warehouseManagementBubble .ui-menu-child {
+	white-space: nowrap;
+	width: 280px !important;
+}
+
+.wareManagementBubble .ui-menu-child {
+	white-space: nowrap;
+	width: 340px !important;
+}
+
+.orderedWaresBubble .ui-menu-child {
+	white-space: nowrap;
+	width: 190px !important;
+}

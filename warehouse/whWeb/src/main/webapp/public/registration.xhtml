@@ -1,0 +1,82 @@
+<ui:composition template="/templates/masterLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+	<ui:define name="pageTitle">Registration</ui:define>
+	<ui:define name="content">
+
+		<div align="center">
+			<br />
+
+			<h:panelGroup rendered="#{not empty request.remoteUser}"
+				style="color: white;">
+				<br />
+				<br />
+				<h2 style="font-family: Broadway; color: white">To access this
+					content, please logout.</h2>
+			</h:panelGroup>
+
+			<p:panel rendered="#{empty request.remoteUser}" style="width:435px;">
+				<f:facet name="header">
+					<h:outputText value="Registration" />
+				</f:facet>
+
+				<h:form id="registrationForm" prependId="false">
+
+					<h:panelGrid columns="2" cellpadding="5">
+
+						<h:outputText value="Username: " />
+						<p:inputText id="userNameInput" required="true"
+							value="#{registrationController.userName}"
+							requiredMessage="Please enter username" />
+
+						<h:outputText value="Password: " />
+						<p:password id="password1" required="true"
+							value="#{registrationController.password1}" match="password2" />
+
+						<h:outputText value="Password again: " />
+						<p:password id="password2" required="true"
+							value="#{registrationController.password2}" />
+
+						<h:outputText value="Fullname: " />
+						<p:inputText id="fullNameInput" required="true"
+							value="#{registrationController.fullName}"
+							requiredMessage="Please enter your fullname" />
+
+						<h:outputText value="Email: " />
+						<p:inputText id="emailInput" required="true"
+							value="#{registrationController.email}"
+							requiredMessage="Please enter your email address."
+							validatorMessage="Invalid email format">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+
+						<h:outputText value="Phone number: " />
+						<p:inputText id="phoneNumberInput" required="true"
+							value="#{registrationController.phoneNumber}"
+							requiredMessage="Please enter your phone number"
+							validatorMessage="Invalid phone number format">
+							<f:validateRegex pattern="^([\d]{11})?$" />
+						</p:inputText>
+					</h:panelGrid>
+
+					<p:separator />
+
+					<p:commandButton id="registrationApply" value="Apply registration"
+						action="#{registrationController.addUser()}" icon="ui-icon-check" />
+
+				</h:form>
+			</p:panel>
+
+		</div>
+
+	</ui:define>
+</ui:composition>

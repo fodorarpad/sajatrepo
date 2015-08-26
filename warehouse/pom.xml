@@ -6,27 +6,61 @@
 	<artifactId>warehouse</artifactId>
 	<version>0.0.1</version>
 	<packaging>pom</packaging>
-	<name>warehouse</name>
+	<name>Raktározási és készletkezelő modul</name>
+	<developers>
+		<developer>
+			<name>Veress Balázs</name>
+			<email>veress.balazs1993@gmail.com</email>
+		</developer>
+		<developer>
+			<name>Tóth Dávid</name>
+			<email>skot9212@gmail.com</email>
+		</developer>
+		<developer>
+			<name>Fodor Árpád</name>
+			<email>hent1989@gmail.com</email>
+		</developer>
+		<developer>
+			<name>Abai Richárd</name>
+			<email>richarddinozzo@gmail.com</email>
+		</developer>
+	</developers>
+	<description>
+	 	A Raktározási és készletkezelő modul termékeket kezel, azokhoz tulajdonságokat rendel.
+	 	A termékeket képes raktárakban elhelyezni valamint mozgatni egyes raktárak között.
+	 	Ezekről a beszerzésesekről valamint mozgatásokról kinyomtatható dokumentumot képes készíteni.
+	 	Képes más moduloknak információt nyújtani egyes raktárak készletmennyiségéről.
+	 	Más modulokban felvett megrendeléseket megjeleníti.
+	 	Riportokat tud készíteni a raktárak készleteiről, valamint azok változásáról.   
+	 </description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+
 	<build>
 		<defaultGoal>install</defaultGoal>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.2</version>
-					<configuration>
-						<source>1.7</source>
-						<target>1.7</target>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 	<modules>
@@ -34,7 +68,9 @@
 		<module>whBusiness</module>
 		<module>whCore</module>
 		<module>whBusinessAPI</module>
-		<module>whEar</module>
+		<module>whEar-All</module>
+		<module>whEar-Business</module>
+		<module>whEar-Web</module>
 	</modules>
 
 	<distributionManagement>
@@ -78,6 +114,12 @@
 				<artifactId>hsqldb</artifactId>
 				<version>2.3.2</version>
 				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-dbcp</groupId>
+				<artifactId>commons-dbcp</artifactId>
+				<version>1.4</version>
 			</dependency>
 
 			<dependency>
@@ -145,11 +187,6 @@
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-core</artifactId>
-				<version>4.0.1.RELEASE</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-web</artifactId>
 				<version>4.0.1.RELEASE</version>
 			</dependency>
 			<dependency>
@@ -232,10 +269,11 @@
 				<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 			</properties>
 			<build>
-				<defaultGoal>clean site:site site:stage </defaultGoal>
+				<defaultGoal>clean site:site site:stage</defaultGoal>
 			</build>
 		</profile>
 	</profiles>
+
 
 
 
@@ -244,51 +282,36 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.7</version>
-				<reportSets>
-					<reportSet>
-						<reports>
-							<report>project-team</report>
-							<report>help</report>
-							<report>modules</report>
-							<report>plugin-management</report>
-							<report>plugins</report>
-							<report>scm</report>
-							<report>summary</report>
-						</reports>
-					</reportSet>
-				</reportSets>
+				<version>2.8</version>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<aggregate>true</aggregate>
-				</configuration>
+				<version>2.10.3</version>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<configuration>
-					<aggregate>true</aggregate>
-				</configuration>
+				<version>3.4</version>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
-				<configuration>
-					<aggregate>true</aggregate>
-				</configuration>
+				<version>2.5</version>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>2.9.1</version>
 				<configuration>
-					<aggregate>true</aggregate>
 					<configLocation>src/main/resources/checkstyle.xml</configLocation>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
@@ -297,6 +320,7 @@
 					<aggregate>true</aggregate>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>

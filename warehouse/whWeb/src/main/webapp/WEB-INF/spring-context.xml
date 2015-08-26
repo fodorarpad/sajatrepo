@@ -17,7 +17,7 @@
 	</bean>
 
 	<!-- security ideiglenesen kikotve (start) -->
-	<!-- <import resource="classpath:spring-security.xml" /> -->
+	<import resource="classpath:spring-security.xml" />
 	<!-- security ideiglenesen kikotve (end) -->
 
 </beans>

@@ -6,14 +6,30 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:sec="http://www.springframework.org/security/tags">
-
-	<ui:define name="pageTitle">Welcome</ui:define>
+	<ui:define name="head-extra">
+		<!-- custom css -->
+	</ui:define>
+	<ui:define name="pageTitle">#{out.index_title}</ui:define>
 	<ui:define name="content">
 
 		<br />
 		<br />
-		<h2 align="center">Welcome in the Warehouse project application's
-			web area!</h2>
+		<br />
+		<h:panelGroup
+			rendered="#{empty request.remoteUser and param['logout'] != 1}"
+			style="color: white;">
+			<h2 align="center" style="font-family: Broadway; color: white">#{out.index_start}</h2>
+		</h:panelGroup>
 
+		<h:panelGroup rendered="#{param['logout'] == 1}" style="color: white;">
+			<h2 align="center" style="font-family: Broadway; color: white">#{out.index_logout}</h2>
+			<br />
+			<h2 align="center" style="font-family: Broadway; color: white">#{out.index_bye}</h2>
+		</h:panelGroup>
+
+		<h:panelGroup rendered="#{not empty request.remoteUser}"
+			style="color: white;">
+			<h2 align="center" style="font-family: Broadway; color: white">#{out.index_login}</h2>
+		</h:panelGroup>
 	</ui:define>
 </ui:composition>

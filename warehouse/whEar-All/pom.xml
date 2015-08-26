@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>hu.neuron.java.warehouse</groupId>
+		<artifactId>warehouse</artifactId>
+		<version>0.0.1</version>
+	</parent>
+	<artifactId>whEar-all</artifactId>
+	<packaging>ear</packaging>
+	<name>Ear-All</name>
+	<description>A projekt telepítéséhez szükséges ear fájl előállítását megvalósító modul.</description>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+
+		<dependency>
+			<groupId>hu.neuron.java.warehouse</groupId>
+			<artifactId>whBusiness</artifactId>
+			<type>ejb</type>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>hu.neuron.java.warehouse</groupId>
+			<artifactId>whWeb</artifactId>
+			<type>war</type>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<version>6</version>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+						<modules>
+						<webModule>
+							<groupId>hu.neuron.java.warehouse</groupId>
+							<artifactId>whWeb</artifactId>
+							<contextRoot>/warehouseApp</contextRoot>
+						</webModule>
+					</modules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
